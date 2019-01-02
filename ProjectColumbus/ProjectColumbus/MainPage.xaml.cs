@@ -16,7 +16,6 @@ namespace ProjectColumbus
         {
             InitializeComponent();
             CheckLocationCard();
-
         }
 
         private async void CheckLocationCard()
@@ -30,7 +29,6 @@ namespace ProjectColumbus
 
         private async Task<Tuple<double, double>> GetLocationAsync()
         {
-
             var locator = CrossGeolocator.Current;
             locator.DesiredAccuracy = 50;
             if (!locator.IsGeolocationEnabled)
@@ -46,5 +44,13 @@ namespace ProjectColumbus
             return new Tuple<double, double>(lat, lon);
         }
 
+        private void btnPopupButton_Clicked(object sender, EventArgs e)
+        {
+            popupLoadingView.IsVisible = true;
+            activityIndicator.IsRunning = true;
+        }
+
+
     }
+
 }

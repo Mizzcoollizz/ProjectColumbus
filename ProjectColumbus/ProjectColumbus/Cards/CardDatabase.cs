@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ProjectColumbus
 {
-
     public class CardDatabase
     {
         readonly SQLiteAsyncConnection database;
@@ -17,7 +16,6 @@ namespace ProjectColumbus
             database = new SQLiteAsyncConnection(dbPath);
             database.CreateTableAsync<CountryCard>().Wait();
             database.CreateTableAsync<AreaCard>().Wait();
-
         }
 
         public void CloseCardDatabase()
@@ -25,14 +23,19 @@ namespace ProjectColumbus
             database.CloseAsync();
         }
 
-        private async void InsertCard(Card card) {
+        private async Task<bool> InsertCard(Card card) {
             var id = await database.InsertAsync(card);
+            return true; //Maybe do something with the id?
         }
 
-        public async void InsertCardIfNeeded(Card card) {
+        public async Task<bool> InsertCardIfNeeded(Card card) {
             var found = await FindCardInDatabase(card);
-            if (found == null) {
-                InsertCard(card);
+            if (found == null)
+            {
+                return await InsertCard(card);
+            }
+            else {
+                return false;
             }
         }
 
